@@ -3,15 +3,16 @@ import { CalendarIcon } from "@heroicons/react/24/outline";
 import { UserCircleIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 
-type Props = {
-  params: {
+interface PageProps {
+  params: Promise<{
     id: string;
-  };
-};
+  }>;
+}
 
-export default function page({ params }: Props) {
+export default async function Annoucements({ params }: PageProps) {
+  const id = (await params).id;
   const annoucement = annoucements?.find(
-    (annoucement) => annoucement?.id === params?.id
+    (annoucement) => annoucement?.id === id
   );
 
   return (

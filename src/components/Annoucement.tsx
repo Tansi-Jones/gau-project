@@ -25,7 +25,7 @@ export const Annoucement = ({
   link,
 }: Props) => {
   return (
-    <Link href={`/${link}`} className="block">
+    <Link href={`/annoucements/${link}`} className="block">
       <article className="flex gap-4 bg-white rounded-xl h-40 p-2">
         <div className="h-full w-56 relative">
           <Image
