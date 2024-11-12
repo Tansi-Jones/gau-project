@@ -2,6 +2,7 @@ import { Annoucement } from "@/components/Annoucement";
 import { annoucements } from "@/constant";
 import { Button } from "@headlessui/react";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Announcer() {
   return (
@@ -25,9 +26,11 @@ export default function Announcer() {
 
       <section className="space-y-5">
         <div className="flex items-center justify-end">
-          <Button className="bg-primary text-sm text-white px-2 py-1.5 rounded-md">
-            Create announcement
-          </Button>
+          <Link href="/announcer/create">
+            <Button className="bg-primary text-sm text-white px-2 py-1.5 rounded-md">
+              Create announcement
+            </Button>
+          </Link>
         </div>
         <div className="space-y-5">
           {annoucements?.map((annoucement, index) => (

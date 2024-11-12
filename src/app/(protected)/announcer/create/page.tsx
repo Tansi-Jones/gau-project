@@ -3,7 +3,10 @@ import Form from "next/form";
 
 export default function Create() {
   return (
-    <Form action="" className="mx-auto lg:w-5/6 xl:w-2/4 space-y-5 my-10">
+    <Form
+      action=""
+      className="mx-auto lg:w-5/6 xl:w-2/4 space-y-5 px-3 md:px-0 my-10"
+    >
       <Field className="flex flex-col">
         <Label htmlFor="title" className="text-primary font-medium">
           Title
@@ -14,7 +17,7 @@ export default function Create() {
           className="bg-white focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-primary/50 text-primary border rounded-lg p-2"
         />
       </Field>
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         <Field className="flex flex-col">
           <Label htmlFor="startDate" className="text-primary font-medium">
             Start date

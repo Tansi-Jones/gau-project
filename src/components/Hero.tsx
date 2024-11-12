@@ -30,18 +30,18 @@ export const Hero = () => {
         </div>
 
         <div className="space-y-8">
-          <h1 className="uppercase text-center text-2xl font-bold text-white">
+          <h1 className="uppercase text-center text-xl md:text-2xl font-bold text-white">
             annoucements
           </h1>
 
           <Form
             action=""
-            className="bg-white py-1 pl-4 pr-1 rounded-full flex items-center justify-between mx-auto w-96 gap-2"
+            className="bg-white py-1 pl-4 pr-1 rounded-full flex items-center justify-between mx-auto w-72 md:w-96 gap-2"
           >
             <Input
               placeholder="Search..."
               type="search"
-              className="bg-transparent w-80 text-primary text-base"
+              className="bg-transparent outline-none w-52 md:w-80 text-primary text-base"
             />
             <Button className="bg-primary rounded-full p-1 w-8 h-8 flex items-center justify-center">
               <MagnifyingGlassIcon className="size-4 text-white" />

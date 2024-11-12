@@ -12,19 +12,23 @@ export default function Home() {
   return (
     <main className="mx-auto w-full md:w-3/4 xl:w-2/5 px-5 md:px-0 mb-28">
       <section className="py-8 flex items-center justify-between">
-        <h3 className="text-primary text-xl font-semibold">20 Annoucements</h3>
+        <h3 className="text-primary text-lg md:text-xl font-semibold">
+          20 Annoucements
+        </h3>
 
         <Menu>
           <MenuButton className="bg-white p-2 gap-8 rounded-lg flex items-center justify-between">
             <span className="flex items-center gap-2">
               <FunnelIcon className="size-5 text-primary/70" />
-              <span className="text-sm text-primary/70">Filter by</span>
+              <span className="hidden md:inline text-sm text-primary/70">
+                Filter by
+              </span>
             </span>
-            <ChevronDownIcon className="size-4 text-primary/70" />
+            <ChevronDownIcon className="hidden md:inline size-4 text-primary/70" />
           </MenuButton>
 
           <MenuItems
-            anchor="bottom"
+            anchor="bottom end"
             className="bg-white px-1 py-2 space-y-1 rounded-lg w-36 border shadow"
           >
             <MenuItem>

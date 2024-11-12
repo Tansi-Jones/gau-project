@@ -26,7 +26,7 @@ export const Annoucement = ({
 }: Props) => {
   return (
     <Link href={`/annoucements/${link}`} className="block">
-      <article className="flex gap-4 bg-white rounded-xl h-40 p-2">
+      <article className="flex gap-2.5 md:gap-4 bg-white rounded-xl h-36 md:h-40 p-2">
         <div className="h-full w-56 relative">
           <Image
             src={image || "/assets/placeholder.png"}
@@ -38,7 +38,7 @@ export const Annoucement = ({
 
         <div className="w-full pr-2 py-1 space-y-2">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-1">
+            <div className="hidden md:flex items-center gap-1">
               <UserCircleIcon className="size-5 text-primary/30" />
               <p className="text-xs text-primary/60">{annoucer}</p>
             </div>
@@ -53,20 +53,22 @@ export const Annoucement = ({
           </div>
 
           <div className="space-y-2">
-            <h1 className="text-primary text-xl font-semibold">{title}</h1>
+            <h1 className="text-primary text-lg md:text-xl font-semibold">
+              {title}
+            </h1>
 
-            <div className="flex items-center gap-2">
+            <div className="flex flex-col md:flex-row md:items-center gap-1 md:gap-2">
               <div className="flex items-center gap-1">
                 <CalendarIcon className="size-5 text-primary/30" />
                 <p className="text-xs text-primary/50">{startDate}</p>
               </div>
-              <p className="text-gray-400"> - </p>
+              <p className="text-gray-400 hidden md:block"> - </p>
               <div className="flex items-center gap-1">
                 <p className="text-xs text-primary/50">Expires on {endDate}</p>
               </div>
             </div>
 
-            <p className="text-primary/50 text-sm">
+            <p className="text-primary/50 hidden md:text-sm">
               {description.slice(0, 100)}
             </p>
           </div>
