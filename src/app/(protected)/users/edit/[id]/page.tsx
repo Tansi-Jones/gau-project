@@ -1,11 +1,25 @@
 import { Button, Field, Input, Label, Textarea } from "@headlessui/react";
 import Form from "next/form";
 
-export default function Create() {
+interface PageProps {
+  params: Promise<{
+    id: string;
+  }>;
+}
+
+export default function Edit({ params }: PageProps) {
+  const getCurrentDate = () => {
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, "0");
+    const dd = String(today.getDate()).padStart(2, "0");
+    return `${yyyy}-${mm}-${dd}`;
+  };
+
   return (
     <Form
       action=""
-      className="mx-auto lg:w-5/6 xl:w-2/4 space-y-5 px-3 md:px-0 my-10"
+      className="mx-auto lg:w-5/6 xl:w-2/4 space-y-5 px-3 lg:px-0 my-10"
     >
       <Field className="flex flex-col">
         <Label htmlFor="title" className="text-primary font-medium">
@@ -14,6 +28,7 @@ export default function Create() {
         <Input
           type="text"
           id="title"
+          required
           className="bg-white focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-primary/50 text-primary border rounded-lg p-2"
         />
       </Field>
@@ -25,6 +40,8 @@ export default function Create() {
           <Input
             type="date"
             id="startDate"
+            required
+            min={getCurrentDate()}
             className="bg-white focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-primary/50 text-primary border rounded-lg p-2"
           />
         </Field>
@@ -35,6 +52,8 @@ export default function Create() {
           <Input
             type="date"
             id="endDate"
+            required
+            min={getCurrentDate()}
             className="bg-white focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-primary/50 text-primary border rounded-lg p-2"
           />
         </Field>
@@ -45,6 +64,7 @@ export default function Create() {
         </Label>
         <Textarea
           id="description"
+          required
           rows={4}
           className="bg-white focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-primary/50 text-primary border rounded-lg p-2 resize-none"
         />
@@ -61,8 +81,11 @@ export default function Create() {
           accept="image/*"
         />
       </Field>
-      <Button className="bg-primary text-white w-full rounded-lg p-2">
-        Create
+      <Button
+        type="submit"
+        className="bg-primary text-white w-full rounded-lg p-2"
+      >
+        Edit
       </Button>
     </Form>
   );

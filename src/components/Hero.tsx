@@ -2,6 +2,7 @@ import { Button, Input } from "@headlessui/react";
 import Image from "next/image";
 import Form from "next/form";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
+import Link from "next/link";
 
 export const Hero = () => {
   return (
@@ -17,15 +18,17 @@ export const Hero = () => {
 
       <nav className="px-3 md:px-20 py-1 z-10 absolute top-0 w-full space-y-8">
         <div className="flex items-center justify-between w-full">
-          <Image
-            src="/logo/logo-white.png"
-            alt="gau logo"
-            width={100}
-            height={100}
-            className="object-cover -z-10"
-          />
+          <Link href="/">
+            <Image
+              src="/logo/logo-white.png"
+              alt="gau logo"
+              width={100}
+              height={100}
+              className="object-cover -z-10"
+            />
+          </Link>
           <Button className="bg-white text-sm rounded-md py-1 px-3">
-            Login
+            <Link href="/account">Login</Link>
           </Button>
         </div>
 

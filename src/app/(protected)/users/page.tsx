@@ -1,0 +1,44 @@
+import { annoucements } from "@/constant";
+import { Button } from "@headlessui/react";
+import Image from "next/image";
+import Link from "next/link";
+import { User } from "@/components/User";
+
+export default function Users() {
+  return (
+    <main className="mx-auto w-full flex lg:w-5/6 xl:w-2/3 gap-8 mt-5 mb-28 p-5">
+      <section className="hidden w-48 h-52 lg:flex flex-col items-center gap-2 rounded-xl bg-white p-5">
+        <Image
+          src="/assets/avatar.svg"
+          alt="avatar"
+          width={80}
+          height={80}
+          className="object-cover"
+        />
+        <div className="w-[4.5rem] flex items-center justify-center rounded-full py-0.5 px-1 bg-teal-100">
+          <p className="text-teal-500 font-medium text-[0.6rem] text-center">
+            ADMIN
+          </p>
+        </div>
+        <p className="text-sm text-primary">Ibrahim Ersan</p>
+        <p className="text-xs text-primary/40">ibrahimersan@gau.edu.tr</p>
+      </section>
+
+      <section className="space-y-5 flex-grow">
+        <div className="flex items-center justify-end">
+          <Link href="/users/create">
+            <Button className="bg-primary text-sm text-white px-2 py-1.5 rounded-md">
+              Add user
+            </Button>
+          </Link>
+        </div>
+
+        <div className="space-y-3">
+          {annoucements?.map((user, index) => (
+            <User key={index} name={user?.annoucer} />
+          ))}
+        </div>
+      </section>
+    </main>
+  );
+}

@@ -30,7 +30,7 @@ export default async function Annoucements({ params }: PageProps) {
           {annoucement?.title}
         </h1>
 
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-2">
           <div className="flex items-center gap-2">
             <div className="flex items-center gap-1">
               <CalendarIcon className="size-5 text-primary/30" />

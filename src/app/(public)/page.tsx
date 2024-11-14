@@ -2,18 +2,24 @@ import { Annoucement } from "@/components/Annoucement";
 import { annoucements } from "@/constant";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import {
-  BarsArrowDownIcon,
-  BarsArrowUpIcon,
+  CalendarDateRangeIcon,
   ChevronDownIcon,
   FunnelIcon,
+  UserIcon,
 } from "@heroicons/react/24/outline";
 
-export default function Home() {
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: Promise<{ query?: string }>;
+}) {
+  const query = (await searchParams).query;
+
   return (
     <main className="mx-auto w-full md:w-3/4 xl:w-2/5 px-5 md:px-0 mb-28">
       <section className="py-8 flex items-center justify-between">
         <h3 className="text-primary text-lg md:text-xl font-semibold">
-          20 Annoucements
+          {query ? `Search results for "${query}"` : "20 Annoucements"}
         </h3>
 
         <Menu>
@@ -21,7 +27,7 @@ export default function Home() {
             <span className="flex items-center gap-2">
               <FunnelIcon className="size-5 text-primary/70" />
               <span className="hidden md:inline text-sm text-primary/70">
-                Filter by
+                Sort by
               </span>
             </span>
             <ChevronDownIcon className="hidden md:inline size-4 text-primary/70" />
@@ -33,14 +39,14 @@ export default function Home() {
           >
             <MenuItem>
               <div className="flex items-center gap-2 hover:bg-primary/5 cursor-pointer rounded-lg p-2">
-                <BarsArrowUpIcon className="size-5 text-primary/70" />
-                <p className="text-sm text-primary/70">Ascending</p>
+                <CalendarDateRangeIcon className="size-5 text-primary/70" />
+                <p className="text-sm text-primary/70">Date</p>
               </div>
             </MenuItem>
             <MenuItem>
               <div className="flex items-center gap-2 hover:bg-primary/5 cursor-pointer rounded-lg p-2">
-                <BarsArrowDownIcon className="size-5 text-primary/70" />
-                <p className="text-sm text-primary/70">Descending</p>
+                <UserIcon className="size-5 text-primary/70" />
+                <p className="text-sm text-primary/70">Announcer</p>
               </div>
             </MenuItem>
           </MenuItems>
