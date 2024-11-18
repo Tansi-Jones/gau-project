@@ -2,6 +2,8 @@
 
 import { revalidateTag } from "next/cache";
 import { server } from "../../www";
+import { auth } from "@/auth";
+// import { uploadImage } from "@/utils/cloudinary";
 
 export const getAnnouncements = async () => {
   try {
@@ -38,8 +40,16 @@ export const getAnnouncementById = async (id: string) => {
   }
 };
 
-export const createAnnouncement = async (data: FormData) => {
+export const createAnnouncement = async (
+  data: FormData,
+  image: Base64URLString
+) => {
+  const session = await auth();
+
   try {
+    // const upload = await uploadImage(image);
+    // console.log(upload);
+
     const request = await fetch(`${server}/announcements`, {
       method: "POST",
       headers: {
@@ -51,7 +61,7 @@ export const createAnnouncement = async (data: FormData) => {
         image: "",
         startDate: data.get("startDate"),
         endDate: data.get("endDate"),
-        announcerId: "37a208f2-bae7-4b92-a1bd-47740bbcd2ec",
+        announcerId: session?.user?.id,
         isUrgent: false,
       }),
     });

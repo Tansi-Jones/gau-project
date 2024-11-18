@@ -4,11 +4,14 @@ import { createAnnouncement } from "@/actions/announcements";
 import { Button, Field, Input, Label, Textarea } from "@headlessui/react";
 import Form from "next/form";
 import Image from "next/image";
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
 import { toast } from "sonner";
+import ReactFileReader from "react-file-reader";
 
 export default function Create() {
   const [isPending, startTransition] = useTransition();
+  const [image, setImage] = useState("");
+  const [imageSize, setImageSize] = useState<number>(0);
 
   const getCurrentDate = () => {
     const today = new Date();
@@ -22,7 +25,8 @@ export default function Create() {
     e: FormData
   ): Promise<string | number | undefined | any> => {
     try {
-      const request = await createAnnouncement(e);
+      // if (imageSize >= 0.9) return toast.error("Image size is largerthan 1MB!");
+      const request = await createAnnouncement(e, image);
       if (request?.type === "error") return toast.error(request.message);
       toast.success(request.message);
     } catch (error) {
@@ -92,16 +96,22 @@ export default function Create() {
       </Field>
 
       <Field className="flex flex-col">
-        <Label htmlFor="image" className="text-primary font-medium">
-          Image
-        </Label>
-        <Input
-          type="file"
-          id="image"
-          name="image"
-          className="bg-white focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-primary/50 text-primary border rounded-lg p-2"
-          accept="image/*"
-        />
+        <ReactFileReader
+          fileTypes={[".png", ".jpg", ".jpeg"]}
+          base64={true}
+          multipleFiles={false}
+          handleFiles={(value: any) => {
+            setImage(value?.base64[0]);
+            setImageSize(value?.fileList[0]?.size / 1024 / 1024);
+          }}
+        >
+          <button
+            type="button"
+            className="bg-white/40 w-full border-2 border-dashed border-gray-400 text-primary rounded-lg p-4"
+          >
+            Upload image
+          </button>
+        </ReactFileReader>
       </Field>
       <Button
         type="submit"
