@@ -1,11 +1,15 @@
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
 import { Annoucement } from "@/components/Annoucement";
-import { annoucements } from "@/constant";
 import { Button } from "@headlessui/react";
 import Image from "next/image";
 import Link from "next/link";
+import { Announcement } from "../../../../types/common.types";
+import { getAnnouncements } from "@/actions/announcements";
+import { BellIcon, BellSlashIcon } from "@heroicons/react/24/outline";
 
-export default function Announcer() {
+export default async function Announcer() {
+  const announcements: Announcement[] = await getAnnouncements();
+
   const tabMenu = [
     {
       name: "Current",
@@ -37,11 +41,12 @@ export default function Announcer() {
         <p className="text-xs text-primary/40">ibrahimersan@gau.edu.tr</p>
       </section>
 
-      <section className="space-y-5">
+      <section className="space-y-5 w-full">
         <div className="flex items-center justify-end">
           <Link href="/account/announcement/create">
-            <Button className="bg-primary text-sm text-white px-2 py-1.5 rounded-md">
-              Create announcement
+            <Button className="bg-primary text-sm flex items-center gap-1 text-white px-2 py-1.5 rounded-md">
+              <BellIcon className="size-5 text-white" />
+              <span>Create announcement</span>
             </Button>
           </Link>
         </div>
@@ -58,56 +63,77 @@ export default function Announcer() {
             ))}
           </TabList>
           <TabPanels className="mt-3">
-            <TabPanel className="rounded-xl bg-primary/5 p-3">
-              <div className="space-y-5">
-                {annoucements?.map((annoucement, index) => (
-                  <Annoucement
-                    key={index}
-                    title={annoucement?.title}
-                    description={annoucement?.description}
-                    startDate={annoucement?.startDate}
-                    endDate={annoucement?.endDate}
-                    hasPriority={annoucement?.hasPriority}
-                    annoucer={annoucement?.annoucer}
-                    image={annoucement?.image}
-                    link={annoucement?.id}
-                  />
-                ))}
-              </div>
+            <TabPanel>
+              {announcements?.length === 0 ? (
+                <div className="flex items-center justify-center flex-col py-5">
+                  <BellSlashIcon className="size-24 md:size-32 text-primary/20" />
+                  <p className="text-primary/60">No Announcements</p>
+                </div>
+              ) : (
+                <div className="space-y-5 rounded-xl bg-primary/5 p-3">
+                  {announcements?.map((annoucement, index) => (
+                    <Annoucement
+                      key={index}
+                      title={annoucement?.title}
+                      body={annoucement?.body}
+                      startDate={annoucement?.startDate}
+                      endDate={annoucement?.endDate}
+                      isUrgent={annoucement?.isUrgent}
+                      announcer={annoucement?.announcer}
+                      image={annoucement?.image}
+                      link={annoucement?.id as string}
+                    />
+                  ))}
+                </div>
+              )}
             </TabPanel>
-            <TabPanel className="rounded-xl bg-primary/5 p-3">
-              <div className="space-y-5">
-                {annoucements?.map((annoucement, index) => (
-                  <Annoucement
-                    key={index}
-                    title={annoucement?.title}
-                    description={annoucement?.description}
-                    startDate={annoucement?.startDate}
-                    endDate={annoucement?.endDate}
-                    hasPriority={annoucement?.hasPriority}
-                    annoucer={annoucement?.annoucer}
-                    image={annoucement?.image}
-                    link={annoucement?.id}
-                  />
-                ))}
-              </div>
+            <TabPanel>
+              {announcements?.length === 0 ? (
+                <div className="flex items-center justify-center flex-col py-5">
+                  <BellSlashIcon className="size-24 md:size-32 text-primary/20" />
+                  <p className="text-primary/60">No Announcements</p>
+                </div>
+              ) : (
+                <div className="space-y-5 rounded-xl bg-primary/5 p-3">
+                  {announcements?.map((annoucement, index) => (
+                    <Annoucement
+                      key={index}
+                      title={annoucement?.title}
+                      body={annoucement?.body}
+                      startDate={annoucement?.startDate}
+                      endDate={annoucement?.endDate}
+                      isUrgent={annoucement?.isUrgent}
+                      announcer={annoucement?.announcer}
+                      image={annoucement?.image}
+                      link={annoucement?.id as string}
+                    />
+                  ))}
+                </div>
+              )}
             </TabPanel>
-            <TabPanel className="rounded-xl bg-primary/5 p-3">
-              <div className="space-y-5">
-                {annoucements?.map((annoucement, index) => (
-                  <Annoucement
-                    key={index}
-                    title={annoucement?.title}
-                    description={annoucement?.description}
-                    startDate={annoucement?.startDate}
-                    endDate={annoucement?.endDate}
-                    hasPriority={annoucement?.hasPriority}
-                    annoucer={annoucement?.annoucer}
-                    image={annoucement?.image}
-                    link={annoucement?.id}
-                  />
-                ))}
-              </div>
+            <TabPanel>
+              {announcements?.length === 0 ? (
+                <div className="flex items-center justify-center flex-col py-5">
+                  <BellSlashIcon className="size-24 md:size-32 text-primary/20" />
+                  <p className="text-primary/60">No Announcements</p>
+                </div>
+              ) : (
+                <div className="space-y-5 rounded-xl bg-primary/5 p-3">
+                  {announcements?.map((annoucement, index) => (
+                    <Annoucement
+                      key={index}
+                      title={annoucement?.title}
+                      body={annoucement?.body}
+                      startDate={annoucement?.startDate}
+                      endDate={annoucement?.endDate}
+                      isUrgent={annoucement?.isUrgent}
+                      announcer={annoucement?.announcer}
+                      image={annoucement?.image}
+                      link={annoucement?.id as string}
+                    />
+                  ))}
+                </div>
+              )}
             </TabPanel>
           </TabPanels>
         </TabGroup>

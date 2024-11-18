@@ -8,28 +8,18 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { DeleteDialog } from "./DeleteDialog";
-
-type Props = {
-  title: string;
-  description: string;
-  image: string;
-  startDate: string;
-  endDate: string;
-  annoucer: string;
-  hasPriority: boolean;
-  link: string;
-};
+import { Announcement } from "../../types/common.types";
 
 export const Annoucement = ({
   title,
-  description,
+  body,
   endDate,
   startDate,
   image,
-  annoucer,
-  hasPriority,
+  announcer,
+  isUrgent,
   link,
-}: Props) => {
+}: Announcement) => {
   return (
     <article className="flex gap-2.5 md:gap-4 bg-white rounded-xl h-36 md:h-40 p-2">
       <div className="h-full w-56 relative">
@@ -45,14 +35,14 @@ export const Annoucement = ({
         <div className="flex items-center justify-between">
           <div className="hidden md:flex items-center gap-1">
             <UserCircleIcon className="size-5 text-primary/30" />
-            <p className="text-xs text-primary/60">{annoucer}</p>
+            <p className="text-xs text-primary/60">{announcer}</p>
           </div>
 
           <div className="flex items-center justify-end w-full sm:w-auto gap-5">
-            {hasPriority && (
+            {!!isUrgent && (
               <div className="flex items-center rounded-full py-0.5 px-2 bg-rose-200">
                 <p className="text-rose-500 font-medium text-[0.6rem]">
-                  IMPORTANT
+                  URGENT
                 </p>
               </div>
             )}
@@ -67,7 +57,7 @@ export const Annoucement = ({
                 className="bg-white px-1 py-2 space-y-1 rounded-lg w-36 border shadow"
               >
                 <MenuItem>
-                  <Link href={`/account/announcement/edit/1`}>
+                  <Link href={`/account/announcement/edit/${link}`}>
                     <div className="flex items-center gap-2 hover:bg-primary/5 cursor-pointer rounded-lg p-2">
                       <PencilIcon className="size-4 text-primary/70" />
                       <p className="text-sm text-primary/70">Edit</p>
@@ -103,7 +93,7 @@ export const Annoucement = ({
           </div>
 
           <p className="text-primary/50 text-sm hidden md:block">
-            {description.slice(0, 100)}
+            {body?.slice(0, 70)}...
           </p>
         </div>
       </div>

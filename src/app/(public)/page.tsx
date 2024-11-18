@@ -1,5 +1,5 @@
+import { getAnnouncements } from "@/actions/announcements";
 import { Annoucement } from "@/components/Annoucement";
-import { annoucements } from "@/constant";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import {
   CalendarDateRangeIcon,
@@ -7,6 +7,7 @@ import {
   FunnelIcon,
   UserIcon,
 } from "@heroicons/react/24/outline";
+import { Announcement } from "../../../types/common.types";
 
 export default async function Home({
   searchParams,
@@ -14,6 +15,7 @@ export default async function Home({
   searchParams: Promise<{ query?: string }>;
 }) {
   const query = (await searchParams).query;
+  const announcements: Announcement[] = await getAnnouncements();
 
   return (
     <main className="mx-auto w-full md:w-3/4 xl:w-2/5 px-5 md:px-0 mb-28">
@@ -54,17 +56,17 @@ export default async function Home({
       </section>
 
       <section className="space-y-5">
-        {annoucements?.map((annoucement, index) => (
+        {announcements?.map((annoucement: Announcement, index) => (
           <Annoucement
             key={index}
             title={annoucement?.title}
-            description={annoucement?.description}
+            body={annoucement?.body}
             startDate={annoucement?.startDate}
             endDate={annoucement?.endDate}
-            hasPriority={annoucement?.hasPriority}
-            annoucer={annoucement?.annoucer}
+            isUrgent={annoucement?.isUrgent}
+            announcer={annoucement?.announcer}
             image={annoucement?.image}
-            link={annoucement?.id}
+            link={annoucement?.id as string}
           />
         ))}
       </section>

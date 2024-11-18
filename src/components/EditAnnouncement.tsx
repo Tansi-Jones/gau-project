@@ -1,12 +1,18 @@
 "use client";
 
-import { createAnnouncement } from "@/actions/announcements";
+import { editAnnouncementById } from "@/actions/announcements";
 import { Button, Field, Input, Label, Textarea } from "@headlessui/react";
 import Form from "next/form";
 import Image from "next/image";
 import { useTransition } from "react";
+import { Announcement } from "../../types/common.types";
 
-export default function Create() {
+type Props = {
+  id: string;
+  data: Announcement;
+};
+
+export const EditAnnouncementForm = ({ id, data }: Props) => {
   const [isPending, startTransition] = useTransition();
 
   const getCurrentDate = () => {
@@ -19,7 +25,7 @@ export default function Create() {
 
   const handleSubmit = async (e: FormData) => {
     try {
-      const request = await createAnnouncement(e);
+      const request = await editAnnouncementById(id, e);
       console.log(request);
     } catch (error) {}
   };
@@ -40,6 +46,7 @@ export default function Create() {
           id="title"
           name="title"
           required
+          defaultValue={data?.title}
           className="bg-white focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-primary/50 text-primary border rounded-lg p-2"
         />
       </Field>
@@ -53,7 +60,7 @@ export default function Create() {
             id="startDate"
             name="startDate"
             required
-            defaultValue={getCurrentDate()}
+            defaultValue={data?.startDate}
             min={getCurrentDate()}
             className="bg-white focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-primary/50 text-primary border rounded-lg p-2"
           />
@@ -68,6 +75,7 @@ export default function Create() {
             name="endDate"
             required
             min={getCurrentDate()}
+            defaultValue={data?.endDate}
             className="bg-white focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-primary/50 text-primary border rounded-lg p-2"
           />
         </Field>
@@ -81,6 +89,7 @@ export default function Create() {
           name="body"
           required
           rows={4}
+          defaultValue={data?.body}
           className="bg-white focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-primary/50 text-primary border rounded-lg p-2 resize-none"
         />
       </Field>
@@ -112,9 +121,9 @@ export default function Create() {
             className="animate-spin"
           />
         ) : (
-          "Create"
+          "Edit"
         )}
       </Button>
     </Form>
   );
-}
+};

@@ -1,18 +1,23 @@
 "use client";
 
+import { editUserById } from "@/actions/users";
 import { Button, Field, Input, Label } from "@headlessui/react";
 import Form from "next/form";
-import { useTransition } from "react";
 import Image from "next/image";
-import { createUser } from "@/actions/users";
+import { useTransition } from "react";
+import { User } from "../../types/common.types";
 
-export default function Create() {
+type Props = {
+  id: string;
+  data: User;
+};
+
+export const EditUserForm = ({ id, data }: Props) => {
   const [isPending, startTransition] = useTransition();
 
   const handleSubmit = async (e: FormData) => {
     try {
-      const request = await createUser(e);
-      console.log(request);
+      const request = await editUserById(id, e);
     } catch (error) {}
   };
 
@@ -30,6 +35,7 @@ export default function Create() {
           id="name"
           name="name"
           required
+          defaultValue={data?.name}
           className="bg-white focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-primary/50 text-primary border rounded-lg p-2"
         />
       </Field>
@@ -43,6 +49,7 @@ export default function Create() {
           id="email"
           name="email"
           required
+          defaultValue={data?.email}
           className="bg-white focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-primary/50 text-primary border rounded-lg p-2"
         />
       </Field>
@@ -62,9 +69,9 @@ export default function Create() {
             className="animate-spin"
           />
         ) : (
-          "Create"
+          "Edit"
         )}
       </Button>
     </Form>
   );
-}
+};
