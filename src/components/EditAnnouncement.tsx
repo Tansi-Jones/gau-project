@@ -6,6 +6,7 @@ import Form from "next/form";
 import Image from "next/image";
 import { useTransition } from "react";
 import { Announcement } from "../../types/common.types";
+import { toast } from "sonner";
 
 type Props = {
   id: string;
@@ -23,11 +24,16 @@ export const EditAnnouncementForm = ({ id, data }: Props) => {
     return `${yyyy}-${mm}-${dd}`;
   };
 
-  const handleSubmit = async (e: FormData) => {
+  const handleSubmit = async (
+    e: FormData
+  ): Promise<string | number | undefined | any> => {
     try {
       const request = await editAnnouncementById(id, e);
-      console.log(request);
-    } catch (error) {}
+      if (request?.type === "error") return toast.error(request.message);
+      toast.success(request.message);
+    } catch (error) {
+      return toast.error("Something went wrong!");
+    }
   };
 
   return (

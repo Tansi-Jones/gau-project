@@ -89,3 +89,20 @@ export const editAnnouncementById = async (id: string, data: FormData) => {
     return { message: "Something went wrong!" };
   }
 };
+
+export const deleteAnnouncementById = async (id: string) => {
+  try {
+    const request = await fetch(`${server}/announcements/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const response = await request?.json();
+    revalidateTag("announcements");
+
+    return response;
+  } catch (error) {
+    return { message: "Something went wrong!" };
+  }
+};

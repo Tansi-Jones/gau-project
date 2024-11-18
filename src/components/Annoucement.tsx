@@ -1,3 +1,5 @@
+"use client";
+
 import { UserCircleIcon } from "@heroicons/react/24/solid";
 import { CalendarIcon } from "@heroicons/react/24/outline";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
@@ -9,6 +11,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { DeleteDialog } from "./DeleteDialog";
 import { Announcement } from "../../types/common.types";
+import { usePathname } from "next/navigation";
 
 export const Annoucement = ({
   title,
@@ -18,8 +21,10 @@ export const Annoucement = ({
   image,
   announcer,
   isUrgent,
-  link,
+  id,
 }: Announcement) => {
+  const path = usePathname();
+
   return (
     <article className="flex gap-2.5 md:gap-4 bg-white rounded-xl h-36 md:h-40 p-2">
       <div className="h-full w-56 relative">
@@ -47,36 +52,35 @@ export const Annoucement = ({
               </div>
             )}
 
-            <Menu>
-              <MenuButton className="bg-gray-100 transition-all hover:bg-gray-300 p-1 rounded-lg flex items-center justify-between">
-                <EllipsisHorizontalIcon className="inline size-4 text-primary/70" />
-              </MenuButton>
+            {path.indexOf("/account") !== -1 && (
+              <Menu>
+                <MenuButton className="bg-gray-100 transition-all hover:bg-gray-300 p-1 rounded-lg flex items-center justify-between">
+                  <EllipsisHorizontalIcon className="inline size-4 text-primary/70" />
+                </MenuButton>
 
-              <MenuItems
-                anchor="bottom end"
-                className="bg-white px-1 py-2 space-y-1 rounded-lg w-36 border shadow"
-              >
-                <MenuItem>
-                  <Link href={`/account/announcement/edit/${link}`}>
-                    <div className="flex items-center gap-2 hover:bg-primary/5 cursor-pointer rounded-lg p-2">
-                      <PencilIcon className="size-4 text-primary/70" />
-                      <p className="text-sm text-primary/70">Edit</p>
-                    </div>
-                  </Link>
-                </MenuItem>
-                <MenuItem>
-                  <DeleteDialog />
-                </MenuItem>
-              </MenuItems>
-            </Menu>
+                <MenuItems
+                  anchor="bottom end"
+                  className="bg-white px-1 py-2 space-y-1 rounded-lg w-36 border shadow"
+                >
+                  <MenuItem>
+                    <Link href={`/account/announcement/edit/${id}`}>
+                      <div className="flex items-center gap-2 hover:bg-primary/5 cursor-pointer rounded-lg p-2">
+                        <PencilIcon className="size-4 text-primary/70" />
+                        <p className="text-sm text-primary/70">Edit</p>
+                      </div>
+                    </Link>
+                  </MenuItem>
+                  <MenuItem>
+                    <DeleteDialog idValue={id as string} route="announcement" />
+                  </MenuItem>
+                </MenuItems>
+              </Menu>
+            )}
           </div>
         </div>
 
         <div className="space-y-2">
-          <Link
-            href={`/annoucements/${link}`}
-            className="block hover:underline"
-          >
+          <Link href={`/annoucements/${id}`} className="block hover:underline">
             <h1 className="text-primary text-lg md:text-xl font-semibold">
               {title}
             </h1>

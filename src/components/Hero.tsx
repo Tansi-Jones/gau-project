@@ -3,8 +3,12 @@ import Image from "next/image";
 import Form from "next/form";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
+import { auth } from "@/auth";
+import { LogoutButton } from "./LogoutButton";
 
-export const Hero = () => {
+export const Hero = async () => {
+  const session = await auth();
+
   return (
     <header className="relative w-full h-60">
       <div className="w-full h-full bg-primary/50">
@@ -27,9 +31,18 @@ export const Hero = () => {
               className="object-cover -z-10"
             />
           </Link>
-          <Button className="bg-white text-sm rounded-md py-1 px-3">
-            <Link href="/account">Login</Link>
-          </Button>
+          {session?.user?.id ? (
+            <div className="flex items-center gap-3">
+              <LogoutButton />
+              <Button className="bg-white text-sm rounded-md py-1 px-3">
+                <Link href="/account">Account</Link>
+              </Button>
+            </div>
+          ) : (
+            <Button className="bg-white text-sm rounded-md py-1 px-3">
+              <Link href="/auth/login">Login</Link>
+            </Button>
+          )}
         </div>
 
         <div className="space-y-8">

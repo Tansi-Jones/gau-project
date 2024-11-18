@@ -34,7 +34,7 @@ export const User = ({ name, id }: UserProp) => {
             </Link>
           </MenuItem>
           <MenuItem>
-            <DeleteDialog />
+            <DeleteDialog idValue={id as string} route="user" />
           </MenuItem>
         </MenuItems>
       </Menu>

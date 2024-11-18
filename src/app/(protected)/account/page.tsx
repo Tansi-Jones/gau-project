@@ -6,8 +6,10 @@ import Link from "next/link";
 import { Announcement } from "../../../../types/common.types";
 import { getAnnouncements } from "@/actions/announcements";
 import { BellIcon, BellSlashIcon } from "@heroicons/react/24/outline";
+import { auth } from "@/auth";
 
 export default async function Announcer() {
+  const session = await auth();
   const announcements: Announcement[] = await getAnnouncements();
 
   const tabMenu = [
@@ -24,7 +26,7 @@ export default async function Announcer() {
 
   return (
     <main className="mx-auto w-full flex lg:w-5/6 xl:w-2/3 gap-8 mt-5 mb-28 p-5">
-      <section className="hidden w-48 h-52 lg:flex flex-col items-center gap-2 rounded-xl bg-white p-5">
+      <section className="hidden min-w-48 w-48 h-52 lg:flex flex-col items-center gap-2 rounded-xl bg-white p-5">
         <Image
           src="/assets/avatar.svg"
           alt="avatar"
@@ -32,13 +34,13 @@ export default async function Announcer() {
           height={80}
           className="object-cover"
         />
-        <div className="w-[4.5rem] flex items-center rounded-full py-0.5 px-1 bg-teal-100">
-          <p className="text-teal-500 font-medium text-[0.6rem] text-center">
-            ANNOUNCER
+        <div className="w-[4.5rem] flex items-center justify-center rounded-full py-0.5 px-1 bg-teal-100">
+          <p className="text-teal-500 uppercase font-medium text-[0.6rem] text-center">
+            {session?.user?.role}
           </p>
         </div>
-        <p className="text-sm text-primary">Ibrahim Ersan</p>
-        <p className="text-xs text-primary/40">ibrahimersan@gau.edu.tr</p>
+        <p className="text-sm text-primary"> {session?.user?.name}</p>
+        <p className="text-xs text-primary/40"> {session?.user?.email}</p>
       </section>
 
       <section className="space-y-5 w-full">
@@ -81,7 +83,7 @@ export default async function Announcer() {
                       isUrgent={annoucement?.isUrgent}
                       announcer={annoucement?.announcer}
                       image={annoucement?.image}
-                      link={annoucement?.id as string}
+                      id={annoucement?.id as string}
                     />
                   ))}
                 </div>
@@ -105,14 +107,14 @@ export default async function Announcer() {
                       isUrgent={annoucement?.isUrgent}
                       announcer={annoucement?.announcer}
                       image={annoucement?.image}
-                      link={annoucement?.id as string}
+                      id={annoucement?.id as string}
                     />
                   ))}
                 </div>
               )}
             </TabPanel>
             <TabPanel>
-              {announcements?.length === 0 ? (
+              {announcements?.length !== 0 ? (
                 <div className="flex items-center justify-center flex-col py-5">
                   <BellSlashIcon className="size-24 md:size-32 text-primary/20" />
                   <p className="text-primary/60">No Announcements</p>
@@ -129,7 +131,7 @@ export default async function Announcer() {
                       isUrgent={annoucement?.isUrgent}
                       announcer={annoucement?.announcer}
                       image={annoucement?.image}
-                      link={annoucement?.id as string}
+                      id={annoucement?.id as string}
                     />
                   ))}
                 </div>

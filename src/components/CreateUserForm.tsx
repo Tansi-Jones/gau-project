@@ -1,26 +1,20 @@
 "use client";
 
-import { editUserById } from "@/actions/users";
 import { Button, Field, Input, Label } from "@headlessui/react";
 import Form from "next/form";
-import Image from "next/image";
 import { useTransition } from "react";
-import { User } from "../../types/common.types";
+import Image from "next/image";
+import { createUser } from "@/actions/users";
 import { toast } from "sonner";
 
-type Props = {
-  id: string;
-  data: User;
-};
-
-export const EditUserForm = ({ id, data }: Props) => {
+export default function CreateUserForm() {
   const [isPending, startTransition] = useTransition();
 
   const handleSubmit = async (
     e: FormData
   ): Promise<string | number | undefined | any> => {
     try {
-      const request = await editUserById(id, e);
+      const request = await createUser(e);
       if (request?.type === "error") return toast.error(request.message);
       toast.success(request.message);
     } catch (error) {
@@ -42,7 +36,6 @@ export const EditUserForm = ({ id, data }: Props) => {
           id="name"
           name="name"
           required
-          defaultValue={data?.name}
           className="bg-white focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-primary/50 text-primary border rounded-lg p-2"
         />
       </Field>
@@ -56,7 +49,6 @@ export const EditUserForm = ({ id, data }: Props) => {
           id="email"
           name="email"
           required
-          defaultValue={data?.email}
           className="bg-white focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-primary/50 text-primary border rounded-lg p-2"
         />
       </Field>
@@ -76,9 +68,9 @@ export const EditUserForm = ({ id, data }: Props) => {
             className="animate-spin"
           />
         ) : (
-          "Edit"
+          "Create"
         )}
       </Button>
     </Form>
   );
-};
+}

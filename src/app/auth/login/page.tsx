@@ -1,9 +1,21 @@
+"use client";
+
+import { logIn } from "@/actions/auth";
 import { Button, Field, Input, Label } from "@headlessui/react";
 import Form from "next/form";
 import Image from "next/image";
 import Link from "next/link";
+import { useTransition } from "react";
 
 export default function Create() {
+  const [isPending, startTransition] = useTransition();
+
+  const handleSubmit = async (e: FormData) => {
+    try {
+      const request = await logIn(e);
+    } catch (error) {}
+  };
+
   return (
     <main>
       <nav className="bg-white flex items-center justify-between w-full px-3 md:px-5 lg:px-16 py-1">
@@ -18,7 +30,10 @@ export default function Create() {
         </Link>
       </nav>
 
-      <Form action="" className="mx-auto md:w-2/6 space-y-5 px-3 lg:px-0 my-10">
+      <Form
+        action={(e) => startTransition(() => handleSubmit(e))}
+        className="mx-auto sm:w-2/4 lg:w-2/6 space-y-5 px-3 lg:px-0 my-10"
+      >
         <div className="text-center">
           <h1 className="text-2xl text-primary font-semibold">Welcome back!</h1>
           <h1 className="text-primary">Login to continue</h1>
@@ -31,27 +46,41 @@ export default function Create() {
           <Input
             type="email"
             id="email"
+            name="email"
             required
             className="bg-white focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-primary/50 text-primary border rounded-lg p-2"
           />
         </Field>
-        <Field className="flex flex-col">
+        {/* <Field className="flex flex-col">
           <Label htmlFor="password" className="text-primary font-medium">
             Password
           </Label>
           <Input
             type="password"
             id="password"
+            name="password"
             required
             className="bg-white focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-primary/50 text-primary border rounded-lg p-2"
           />
-        </Field>
+        </Field> */}
 
         <Button
           type="submit"
-          className="bg-primary text-white w-full rounded-lg p-2"
+          disabled={isPending}
+          className="bg-primary flex items-center justify-center text-white w-full rounded-lg p-2"
         >
-          Login
+          {isPending ? (
+            <Image
+              src="/assets/loader.svg"
+              alt="loader"
+              width={24}
+              height={24}
+              sizes="100vh"
+              className="animate-spin"
+            />
+          ) : (
+            "Login"
+          )}
         </Button>
       </Form>
     </main>

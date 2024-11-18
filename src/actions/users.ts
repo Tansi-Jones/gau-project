@@ -38,6 +38,22 @@ export const getUserById = async (id: string) => {
   }
 };
 
+export const getUserByEmail = async (email: string) => {
+  try {
+    const request = await fetch(`${server}/users/login/${email}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const response = await request?.json();
+
+    return response;
+  } catch (error) {
+    return { message: "Something went wrong!" };
+  }
+};
+
 export const createUser = async (data: FormData) => {
   try {
     const request = await fetch(`${server}/users`, {
@@ -71,6 +87,23 @@ export const editUserById = async (id: string, data: FormData) => {
         name: data.get("name"),
         email: data.get("email"),
       }),
+    });
+    const response = await request?.json();
+    revalidateTag("users");
+
+    return response;
+  } catch (error) {
+    return { message: "Something went wrong!" };
+  }
+};
+
+export const deleteUserById = async (id: string) => {
+  try {
+    const request = await fetch(`${server}/users/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
     });
     const response = await request?.json();
     revalidateTag("users");

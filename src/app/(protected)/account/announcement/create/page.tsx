@@ -5,6 +5,7 @@ import { Button, Field, Input, Label, Textarea } from "@headlessui/react";
 import Form from "next/form";
 import Image from "next/image";
 import { useTransition } from "react";
+import { toast } from "sonner";
 
 export default function Create() {
   const [isPending, startTransition] = useTransition();
@@ -17,11 +18,16 @@ export default function Create() {
     return `${yyyy}-${mm}-${dd}`;
   };
 
-  const handleSubmit = async (e: FormData) => {
+  const handleSubmit = async (
+    e: FormData
+  ): Promise<string | number | undefined | any> => {
     try {
       const request = await createAnnouncement(e);
-      console.log(request);
-    } catch (error) {}
+      if (request?.type === "error") return toast.error(request.message);
+      toast.success(request.message);
+    } catch (error) {
+      return toast.error("Something went wrong!");
+    }
   };
 
   return (
