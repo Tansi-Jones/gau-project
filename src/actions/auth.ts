@@ -7,7 +7,7 @@ export const logOut = async () => {
   return await signOut({ redirectTo: "/" });
 };
 
-export const logIn = async (data: FormData, callbackUrl?: string | null) => {
+export const logIn = async (data: FormData) => {
   try {
     await signIn("credentials", {
       email: data?.get("email"),

@@ -15,7 +15,6 @@ import { useState, useTransition } from "react";
 import { Announcement } from "../../types/common.types";
 import { toast } from "sonner";
 import { getCurrentDate } from "@/utils/format";
-import { uploadImage } from "@/utils/cloudinary";
 
 type Props = {
   id: string;
@@ -48,20 +47,18 @@ export const EditAnnouncementForm = ({ id, data, role }: Props) => {
     }
   };
 
-  const handleSubmit = async (
-    e: FormData
-  ): Promise<string | number | undefined | any> => {
-    try {
-      if (Number(imageSize) >= 0.5)
-        return toast.error("Image size exceeds 500KB!");
-
-      const request = await editAnnouncementById(id, e, image);
-      if (request?.type === "error") return toast.error(request.message);
-      toast.success(request.message);
-    } catch (error) {
-      toast.error("Something went wrong!");
-      return error;
+  const handleSubmit = async (e: FormData) => {
+    if (Number(imageSize) >= 0.5) {
+      toast.error("Image size exceeds 500KB!");
+      return;
     }
+
+    await editAnnouncementById(id, e, image)
+      .then((data) => {
+        if (data?.type === "error") toast.error(data.message);
+        else toast.success(data.message);
+      })
+      .catch(() => toast.error("Something went wrong!"));
   };
 
   return (

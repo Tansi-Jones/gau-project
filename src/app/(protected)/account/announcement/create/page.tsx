@@ -33,17 +33,18 @@ export default function Create() {
     }
   };
 
-  const handleSubmit = async (e: FormData): Promise<any> => {
-    try {
-      if (Number(imageSize) >= 0.5)
-        return toast.error("Image size exceeds 500KB!");
-
-      const request = await createAnnouncement(e, image);
-      if (request?.type === "error") return toast.error(request.message);
-      toast.success(request.message);
-    } catch (error) {
-      return toast.error("Something went wrong!");
+  const handleSubmit = async (e: FormData) => {
+    if (Number(imageSize) >= 0.5) {
+      toast.error("Image size exceeds 500KB!");
+      return;
     }
+
+    await createAnnouncement(e, image)
+      .then((data) => {
+        if (data?.type === "error") return toast.error(data.message);
+        toast.success(data.message);
+      })
+      .catch(() => toast.error("Something went wrong!"));
   };
 
   return (

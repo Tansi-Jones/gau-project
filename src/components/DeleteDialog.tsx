@@ -24,34 +24,24 @@ export const DeleteDialog = ({ idValue, route }: Props) => {
 
   const [isOpen, setIsOpen] = useState(false);
 
-  const handleDeleteAnnouncement = async (): Promise<
-    string | number | undefined | any
-  > => {
-    try {
-      const request = await deleteAnnouncementById(idValue);
-
-      if (request?.type === "error") return toast.error(request.message);
-      toast.success(request.message);
-      return setIsOpen(!isOpen);
-    } catch (error) {
-      toast.error("Something went wrong!");
-      return error;
-    }
+  const handleDeleteAnnouncement = async () => {
+    await deleteAnnouncementById(idValue)
+      .then((data) => {
+        if (data?.type === "error") return toast.error(data.message);
+        toast.success(data.message);
+        return setIsOpen(!isOpen);
+      })
+      .catch(() => toast.error("Something went wrong!"));
   };
 
-  const handleDeleteUser = async (): Promise<
-    string | number | undefined | any
-  > => {
-    try {
-      const request = await deleteAnnouncementById(idValue);
-
-      if (request?.type === "error") return toast.error(request.message);
-      toast.success(request.message);
-      return setIsOpen(!isOpen);
-    } catch (error) {
-      toast.error("Something went wrong!");
-      return error;
-    }
+  const handleDeleteUser = async () => {
+    await deleteAnnouncementById(idValue)
+      .then((data) => {
+        if (data?.type === "error") return toast.error(data?.message);
+        toast.success(data?.message);
+        return setIsOpen(!isOpen);
+      })
+      .catch(() => toast.error("Something went wrong!"));
   };
 
   return (
