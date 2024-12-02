@@ -24,7 +24,8 @@ export const EditUserForm = ({ id, data }: Props) => {
       if (request?.type === "error") return toast.error(request.message);
       toast.success(request.message);
     } catch (error) {
-      return toast.error("Something went wrong!");
+      toast.error("Something went wrong!");
+      return error;
     }
   };
 

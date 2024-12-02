@@ -18,7 +18,7 @@ export const getUsers = async () => {
 
     return response;
   } catch (error) {
-    return { message: "Something went wrong!" };
+    return { message: "Something went wrong!", error };
   }
 };
 
@@ -34,7 +34,7 @@ export const getUserById = async (id: string) => {
 
     return response;
   } catch (error) {
-    return { message: "Something went wrong!" };
+    return { message: "Something went wrong!", error };
   }
 };
 
@@ -50,7 +50,7 @@ export const getUserByEmail = async (email: string) => {
 
     return response;
   } catch (error) {
-    return { message: "Something went wrong!" };
+    return { message: "Something went wrong!", error };
   }
 };
 
@@ -72,7 +72,7 @@ export const createUser = async (data: FormData) => {
 
     return response;
   } catch (error) {
-    return { message: "Something went wrong!" };
+    return { message: "Something went wrong!", error };
   }
 };
 
@@ -93,7 +93,7 @@ export const editUserById = async (id: string, data: FormData) => {
 
     return response;
   } catch (error) {
-    return { message: "Something went wrong!" };
+    return { message: "Something went wrong!", error };
   }
 };
 
@@ -110,6 +110,6 @@ export const deleteUserById = async (id: string) => {
 
     return response;
   } catch (error) {
-    return { message: "Something went wrong!" };
+    return { message: "Something went wrong!", error };
   }
 };

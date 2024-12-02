@@ -12,10 +12,7 @@ export const uploadImage = async (url: string) => {
     .upload(url, {
       folder: "gau",
     })
-    .catch((error) => {
-      console.log(error);
-    });
+    .catch((error) => {});
 
-  console.log(uploadResult);
   return uploadResult;
 };

@@ -22,7 +22,7 @@ type Props = {
 export const DeleteDialog = ({ idValue, route }: Props) => {
   const [isPending, startTransition] = useTransition();
 
-  let [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const handleDeleteAnnouncement = async (): Promise<
     string | number | undefined | any
@@ -34,7 +34,8 @@ export const DeleteDialog = ({ idValue, route }: Props) => {
       toast.success(request.message);
       return setIsOpen(!isOpen);
     } catch (error) {
-      return toast.error("Something went wrong!");
+      toast.error("Something went wrong!");
+      return error;
     }
   };
 
@@ -48,7 +49,8 @@ export const DeleteDialog = ({ idValue, route }: Props) => {
       toast.success(request.message);
       return setIsOpen(!isOpen);
     } catch (error) {
-      return toast.error("Something went wrong!");
+      toast.error("Something went wrong!");
+      return error;
     }
   };
 
@@ -83,8 +85,8 @@ export const DeleteDialog = ({ idValue, route }: Props) => {
               </DialogTitle>
               <p className="mt-2 text-sm/6 text-primary/50">
                 {route === "user"
-                  ? " Are you sure to want to delete this user? All announcements will be archived & this action cannot be undone."
-                  : "Are you sure to want to delete this annoucement? This action cannot be undone."}
+                  ? " Are you sure you want to delete this user? All announcements will be archived & this action cannot be undone."
+                  : "Are you sure you want to delete this annoucement? This action cannot be undone."}
               </p>
               <div className="mt-4">
                 <Form

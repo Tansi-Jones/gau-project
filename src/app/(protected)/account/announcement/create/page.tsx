@@ -1,31 +1,43 @@
 "use client";
 
 import { createAnnouncement } from "@/actions/announcements";
+import { getCurrentDate } from "@/utils/format";
 import { Button, Field, Input, Label, Textarea } from "@headlessui/react";
 import Form from "next/form";
 import Image from "next/image";
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
-import ReactFileReader from "react-file-reader";
 
 export default function Create() {
   const [isPending, startTransition] = useTransition();
-  const [image, setImage] = useState("");
-  const [imageSize, setImageSize] = useState<number>(0);
+  const [image, setImage] = useState<string>("");
+  const [imageSize, setImageSize] = useState<string>("");
 
-  const getCurrentDate = () => {
-    const today = new Date();
-    const yyyy = today.getFullYear();
-    const mm = String(today.getMonth() + 1).padStart(2, "0");
-    const dd = String(today.getDate()).padStart(2, "0");
-    return `${yyyy}-${mm}-${dd}`;
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    const sizeInMB = ((file?.size as number) / (1024 * 1024)).toFixed(2); // Rounded to 2 decimal places
+    setImageSize(sizeInMB);
+
+    if (file) {
+      const reader = new FileReader();
+
+      // When the file is read, update the Base64 state
+      reader.onload = () => {
+        if (reader.result) {
+          setImage(reader.result as string);
+        }
+      };
+
+      // Read the file as Data URL (Base64)
+      reader.readAsDataURL(file);
+    }
   };
 
-  const handleSubmit = async (
-    e: FormData
-  ): Promise<string | number | undefined | any> => {
+  const handleSubmit = async (e: FormData): Promise<any> => {
     try {
-      // if (imageSize >= 0.9) return toast.error("Image size is largerthan 1MB!");
+      if (Number(imageSize) >= 0.5)
+        return toast.error("Image size exceeds 500KB!");
+
       const request = await createAnnouncement(e, image);
       if (request?.type === "error") return toast.error(request.message);
       toast.success(request.message);
@@ -96,22 +108,17 @@ export default function Create() {
       </Field>
 
       <Field className="flex flex-col">
-        <ReactFileReader
-          fileTypes={[".png", ".jpg", ".jpeg"]}
-          base64={true}
-          multipleFiles={false}
-          handleFiles={(value: any) => {
-            setImage(value?.base64[0]);
-            setImageSize(value?.fileList[0]?.size / 1024 / 1024);
-          }}
-        >
-          <button
-            type="button"
-            className="bg-white/40 w-full border-2 border-dashed border-gray-400 text-primary rounded-lg p-4"
-          >
-            Upload image
-          </button>
-        </ReactFileReader>
+        <Label htmlFor="image" className="text-primary font-medium">
+          Image
+        </Label>
+        <Input
+          type="file"
+          id="image"
+          name="image"
+          className="bg-white focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-primary/50 text-primary border rounded-lg p-2"
+          accept="image/*"
+          onChange={handleImageChange}
+        />
       </Field>
       <Button
         type="submit"

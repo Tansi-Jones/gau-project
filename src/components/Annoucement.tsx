@@ -37,8 +37,8 @@ export const Annoucement = ({
       </div>
 
       <div className="w-full pr-2 py-1 space-y-1">
-        <div className="flex items-center justify-between">
-          <div className="hidden md:flex items-center gap-1">
+        <div className="flex items-center justify-end sm:justify-between">
+          <div className="hidden sm:flex items-center gap-1">
             <UserCircleIcon className="size-5 text-primary/30" />
             <p className="text-xs text-primary/60">{announcer}</p>
           </div>

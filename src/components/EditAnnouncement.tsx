@@ -1,38 +1,66 @@
 "use client";
 
 import { editAnnouncementById } from "@/actions/announcements";
-import { Button, Field, Input, Label, Textarea } from "@headlessui/react";
+import {
+  Button,
+  Field,
+  Input,
+  Label,
+  Switch,
+  Textarea,
+} from "@headlessui/react";
 import Form from "next/form";
 import Image from "next/image";
-import { useTransition } from "react";
+import { useState, useTransition } from "react";
 import { Announcement } from "../../types/common.types";
 import { toast } from "sonner";
+import { getCurrentDate } from "@/utils/format";
+import { uploadImage } from "@/utils/cloudinary";
 
 type Props = {
   id: string;
+  role: string;
   data: Announcement;
 };
 
-export const EditAnnouncementForm = ({ id, data }: Props) => {
+export const EditAnnouncementForm = ({ id, data, role }: Props) => {
   const [isPending, startTransition] = useTransition();
+  const [image, setImage] = useState<string>("");
+  const [imageSize, setImageSize] = useState<string>("");
 
-  const getCurrentDate = () => {
-    const today = new Date();
-    const yyyy = today.getFullYear();
-    const mm = String(today.getMonth() + 1).padStart(2, "0");
-    const dd = String(today.getDate()).padStart(2, "0");
-    return `${yyyy}-${mm}-${dd}`;
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    const sizeInMB = ((file?.size as number) / (1024 * 1024)).toFixed(2); // Rounded to 2 decimal places
+    setImageSize(sizeInMB);
+
+    if (file) {
+      const reader = new FileReader();
+
+      // When the file is read, update the Base64 state
+      reader.onload = () => {
+        if (reader.result) {
+          setImage(reader.result as string);
+        }
+      };
+
+      // Read the file as Data URL (Base64)
+      reader.readAsDataURL(file);
+    }
   };
 
   const handleSubmit = async (
     e: FormData
   ): Promise<string | number | undefined | any> => {
     try {
-      const request = await editAnnouncementById(id, e);
+      if (Number(imageSize) >= 0.5)
+        return toast.error("Image size exceeds 500KB!");
+
+      const request = await editAnnouncementById(id, e, image);
       if (request?.type === "error") return toast.error(request.message);
       toast.success(request.message);
     } catch (error) {
-      return toast.error("Something went wrong!");
+      toast.error("Something went wrong!");
+      return error;
     }
   };
 
@@ -56,6 +84,7 @@ export const EditAnnouncementForm = ({ id, data }: Props) => {
           className="bg-white focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-primary/50 text-primary border rounded-lg p-2"
         />
       </Field>
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
         <Field className="flex flex-col">
           <Label htmlFor="startDate" className="text-primary font-medium">
@@ -86,6 +115,7 @@ export const EditAnnouncementForm = ({ id, data }: Props) => {
           />
         </Field>
       </div>
+
       <Field className="flex flex-col">
         <Label htmlFor="body" className="text-primary font-medium">
           Body
@@ -110,8 +140,29 @@ export const EditAnnouncementForm = ({ id, data }: Props) => {
           name="image"
           className="bg-white focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-primary/50 text-primary border rounded-lg p-2"
           accept="image/*"
+          onChange={handleImageChange}
         />
       </Field>
+
+      {role === "Admin" && (
+        <Field className="flex justify-between items-center bg-white border rounded-lg p-2">
+          <Label htmlFor="isUrgent" className="text-primary font-medium">
+            Make this post urgent.
+          </Label>
+          <Switch
+            defaultChecked={!!data?.isUrgent}
+            name="isUrgent"
+            id="isUrgent"
+            className="group relative flex h-7 w-14 cursor-pointer rounded-full bg-primary/20 p-1 transition-colors duration-200 ease-in-out focus:outline-none data-[focus]:outline-1 data-[focus]:outline-rose-500 data-[checked]:bg-rose-500"
+          >
+            <span
+              aria-hidden="true"
+              className="pointer-events-none inline-block size-5 translate-x-0 rounded-full bg-white ring-0 shadow-lg transition duration-200 ease-in-out group-data-[checked]:translate-x-7"
+            />
+          </Switch>
+        </Field>
+      )}
+
       <Button
         type="submit"
         disabled={isPending}

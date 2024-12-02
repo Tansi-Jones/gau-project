@@ -5,8 +5,10 @@ const nextConfig: NextConfig = {
     dangerouslyAllowSVG: true,
     remotePatterns: [
       {
-        protocol: "https",
+        protocol: "http",
         hostname: "res.cloudinary.com",
+        port: "",
+        pathname: "/remeek/image/upload/v1733157717/gau/**",
       },
     ],
   },

@@ -6,14 +6,15 @@ import Form from "next/form";
 import Image from "next/image";
 import Link from "next/link";
 import { useTransition } from "react";
+import { toast } from "sonner";
 
 export default function Create() {
   const [isPending, startTransition] = useTransition();
 
   const handleSubmit = async (e: FormData) => {
-    try {
-      const request = await logIn(e);
-    } catch (error) {}
+    const data = await logIn(e);
+    if (data?.error) toast.error(data?.error);
+    if (data?.success) toast.success(data?.success);
   };
 
   return (

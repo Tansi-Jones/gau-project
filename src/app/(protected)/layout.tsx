@@ -1,13 +1,17 @@
 import { Navbar } from "@/components/Navbar";
 import Image from "next/image";
+import { auth } from "@/auth";
+import { redirect } from "next/navigation";
 
-export default function ProtectedLayout({
+export default async function ProtectedLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await auth();
   const hours = new Date().getHours();
 
+  if (!session?.user?.id) return redirect("/auth/login");
   return (
     <>
       <Navbar />

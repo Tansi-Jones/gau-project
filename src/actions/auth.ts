@@ -1,7 +1,6 @@
 "use server";
 
 import { signOut, signIn } from "@/auth";
-import { DEFAULT_LOGIC_REDIRECT } from "../../routes";
 import { AuthError } from "next-auth";
 
 export const logOut = async () => {
@@ -14,7 +13,7 @@ export const logIn = async (data: FormData, callbackUrl?: string | null) => {
       email: data?.get("email"),
       password: data?.get("password"),
 
-      redirectTo: callbackUrl || DEFAULT_LOGIC_REDIRECT,
+      redirectTo: "/account",
     });
 
     return { success: "success" };
