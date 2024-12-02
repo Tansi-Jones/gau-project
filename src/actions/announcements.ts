@@ -4,7 +4,6 @@ import { revalidateTag } from "next/cache";
 import { server } from "../../www";
 import { auth } from "@/auth";
 import { uploadImage } from "@/utils/cloudinary";
-// import { uploadImage } from "@/utils/cloudinary";
 
 export const getAllAnnouncements = async () => {
   try {
@@ -83,10 +82,7 @@ export const getAnnouncementById = async (id: string) => {
   }
 };
 
-export const createAnnouncement = async (
-  data: FormData,
-  image?: Base64URLString
-) => {
+export const createAnnouncement = async (data: FormData, image?: string) => {
   const session = await auth();
 
   try {
@@ -120,7 +116,7 @@ export const createAnnouncement = async (
 export const editAnnouncementById = async (
   id: string,
   data: FormData,
-  image?: Base64URLString
+  image?: string
 ) => {
   const session = await auth();
   try {
