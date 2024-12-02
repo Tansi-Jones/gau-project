@@ -17,7 +17,7 @@ export const SearchForm = () => {
     >
       <Input
         placeholder="Search..."
-        type="search"
+        type="text"
         name="query"
         defaultValue={query}
         className="bg-transparent outline-none w-44 md:w-80 text-primary text-base"
