@@ -11,8 +11,10 @@ export const SearchAnnoucements = ({
   announcements: Announcement[];
 }) => {
   const searchedAnnouncements = query
-    ? announcements?.filter((annoucement) =>
-        annoucement.title?.toLowerCase()?.includes(query?.toLowerCase())
+    ? announcements?.filter(
+        (annoucement) =>
+          annoucement.title?.toLowerCase()?.includes(query?.toLowerCase()) ||
+          annoucement.announcer?.toLowerCase()?.includes(query?.toLowerCase())
       )
     : announcements;
 
