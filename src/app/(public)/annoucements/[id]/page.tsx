@@ -1,8 +1,8 @@
 import { CalendarIcon } from "@heroicons/react/24/outline";
 import { UserCircleIcon } from "@heroicons/react/24/solid";
-import Image from "next/image";
 import { Announcement } from "../../../../../types/common.types";
 import { getAnnouncementById } from "@/actions/announcements";
+import { ImagePreview } from "@/components/ImagePreview";
 
 interface PageProps {
   params: Promise<{
@@ -53,16 +53,7 @@ export default async function Annoucements({ params }: PageProps) {
 
         <p className="text-primary/50 text-sm">{announcement?.body}</p>
 
-        {announcement?.image && (
-          <div className="h-72 w-full relative">
-            <Image
-              src={announcement?.image}
-              fill
-              className="object-cover overflow-auto rounded-lg"
-              alt="img"
-            />
-          </div>
-        )}
+        {announcement?.image && <ImagePreview image={announcement?.image} />}
       </section>
     </main>
   );

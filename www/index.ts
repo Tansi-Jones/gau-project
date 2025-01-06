@@ -1,1 +1,1 @@
-export const server = "https://gau-announcement-be.vercel.app";
+export const server = "http://127.0.0.1:5000";

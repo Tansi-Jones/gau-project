@@ -21,7 +21,7 @@ export const logIn = async (data: FormData) => {
     if (error instanceof AuthError) {
       switch (error.type) {
         case "CredentialsSignin":
-          return { error: "Invalid credentials!" };
+          return { error: "This Email doesn't exist!" };
         case "CallbackRouteError":
           return { error: "Callback route error!" };
 

@@ -100,7 +100,7 @@ export const createAnnouncement = async (data: FormData, image?: string) => {
         startDate: data.get("startDate"),
         endDate: data.get("endDate"),
         announcerId: session?.user?.id,
-        isUrgent: false,
+        isUrgent: data.get("isUrgent") ? 1 : 0,
       }),
     });
     const response = await request?.json();

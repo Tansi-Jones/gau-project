@@ -10,6 +10,9 @@ const nextConfig: NextConfig = {
         port: "",
         pathname: "/remeek/image/upload/v1733157717/gau/**",
       },
+      {
+        hostname: "*",
+      },
     ],
   },
 };
